@@ -237,7 +237,7 @@ allow_mode_change(struct Client *source_p, struct Channel *chptr, int alevel,
 /* add_id()
  *
  * inputs	- client, channel, id to add, type, forward
- * outputs	- false on failure, true on success
+ * outputs	- NULL on failure, allocated Ban on success
  * side effects - given id is added to the appropriate list
  */
 struct Ban *
