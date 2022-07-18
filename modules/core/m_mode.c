@@ -387,6 +387,9 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 				banptr->when = bants;
 				rb_free(banptr->who);
 				banptr->who = rb_strdup(who);
+
+				sprintf(dbuf, "%s ", s);
+				dbuf += arglen;
 			}
 
 			/* this new one wont fit.. */
@@ -410,9 +413,6 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 			pbuf += arglen;
 			plen += arglen;
 			modecount++;
-
-			sprintf(dbuf, "%s ", s);
-			dbuf += arglen;
 		}
 
 	      nextban:
@@ -429,11 +429,15 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 		sendto_channel_local(fakesource_p, mems, chptr, "%s %s", modebuf, parabuf);
 	}
 
-	if (extended)
+	if (extended) {
 		sendto_server(client_p, chptr, CAP_EBMASK | CAP_TS6 | needcap, NOCAPS, ":%s EBMASK %ld %s %s :%s",
 			      source_p->id, (long) chptr->channelts, chptr->chname, parv[3], parv[4]);
-	sendto_server(client_p, chptr, CAP_TS6 | needcap, CAP_EBMASK, ":%s BMASK %ld %s %s :%s",
-		      source_p->id, (long) chptr->channelts, chptr->chname, parv[3], degrade);
+		sendto_server(client_p, chptr, CAP_TS6 | needcap, CAP_EBMASK, ":%s BMASK %ld %s %s :%s",
+			      source_p->id, (long) chptr->channelts, chptr->chname, parv[3], degrade);
+	}
+	else
+		sendto_server(client_p, chptr, CAP_TS6 | needcap, NOCAPS, ":%s BMASK %ld %s %s :%s",
+			      source_p->id, (long) chptr->channelts, chptr->chname, parv[3], parv[4]);
 }
 
 static void
