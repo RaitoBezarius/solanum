@@ -385,7 +385,8 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 				}
 
 				banptr->when = bants;
-				strcpy(banptr->who, who);
+				rb_free(banptr->who);
+				banptr->who = rb_strdup(who);
 			}
 
 			/* this new one wont fit.. */
