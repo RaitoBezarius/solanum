@@ -377,7 +377,7 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 			if (extended)
 			{
 				bants = atol(strtok(NULL, " "));
-				strcpy(who, t = strtok(NULL, " "));
+				who = strtok(NULL, " ");
 
 				if (who == NULL)
 				{
@@ -385,7 +385,7 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 				}
 
 				banptr->when = bants;
-				banptr->who = who;
+				strcpy(banptr->who, who);
 			}
 
 			/* this new one wont fit.. */
