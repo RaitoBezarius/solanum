@@ -282,7 +282,7 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 	int modecount = 0;
 	int needcap = NOCAPS;
 	int mems;
-	time_t bants = TS_CURRENT;
+	time_t bants = (long)rb_current_time();
 	struct Client *fakesource_p;
 
 	if(!IsChanPrefix(parv[2][0]) || !check_channel_name(parv[2]))
