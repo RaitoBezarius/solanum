@@ -410,7 +410,9 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 			pbuf += arglen;
 			plen += arglen;
 			modecount++;
+
 			sprintf(dbuf, "%s ", s);
+			dbuf += arglen;
 		}
 
 	      nextban:
