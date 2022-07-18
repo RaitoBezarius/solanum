@@ -336,7 +336,6 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 		fakesource_p = &me;
 	else
 		fakesource_p = source_p;
-	who = fakesource_p->name;
 
 	mlen = sprintf(modebuf, ":%s MODE %s +", fakesource_p->name, chptr->chname);
 	mbuf = modebuf + mlen;
