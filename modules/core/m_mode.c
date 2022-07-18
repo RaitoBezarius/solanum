@@ -271,7 +271,6 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 	struct Ban *banptr;
 	rb_dlink_list *banlist;
 	char *s, *forward, *who;
-	char *t;
 	char *mbuf;
 	char *pbuf;
 	char *dbuf;
@@ -346,7 +345,7 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 	while(*s == ' ')
 		s++;
 
-	t = strtok(s, " ");
+	strtok(s, " ");
 
 	while(!EmptyString(s))
 	{
