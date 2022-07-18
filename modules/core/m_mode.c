@@ -270,7 +270,7 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 	struct Channel *chptr;
 	struct Ban *banptr;
 	rb_dlink_list *banlist;
-	char *s, *forward, *who;
+	char *s, *mask, *forward, *who;
 	char *mbuf;
 	char *pbuf;
 	char *dbuf;
@@ -345,7 +345,7 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 	while(*s == ' ')
 		s++;
 
-	strtok(s, " ");
+	s = strtok(s, " ");
 
 	while(!EmptyString(s))
 	{
@@ -376,8 +376,8 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 						parv[3][0], s, forward);
 		}
 
-
-		if((banptr = add_id(fakesource_p, chptr, s, forward, banlist, mode_type)) != NULL)
+		mask = s;
+		if((banptr = add_id(fakesource_p, chptr, mask, forward, banlist, mode_type)) != NULL)
 		{
 			if (extended)
 			{
@@ -398,7 +398,7 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 				rb_free(banptr->who);
 				banptr->who = rb_strdup(who);
 
-				sprintf(dbuf, "%s ", s);
+				arglen = sprintf(dbuf, "%s ", mask);
 				dbuf += arglen;
 			}
 
@@ -419,7 +419,7 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 				forward[-1] = '$';
 
 			*mbuf++ = parv[3][0];
-			arglen = sprintf(pbuf, "%s ", s);
+			arglen = sprintf(pbuf, "%s ", mask);
 			pbuf += arglen;
 			plen += arglen;
 			modecount++;
