@@ -355,7 +355,7 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 			sendto_realops_snomask(SNO_GENERAL, L_NETWIDE,
 				"Link %s dropped, invalid BMASK mask (%s)", source_p->name, s);
 			snprintf(squitreason, sizeof squitreason, "Invalid BMASK mask (%s)", s);
-			exit_client(source_p, source_p, source_p, squitreason);
+			exit_client(client_p, client_p, client_p, squitreason);
 			return;
 		}
 
@@ -390,7 +390,7 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 					sendto_realops_snomask(SNO_GENERAL, L_NETWIDE,
 						"Link %s dropped, invalid EBMASK chunk", source_p->name);
 					snprintf(squitreason, sizeof squitreason, "Invalid EBMASK chunk");
-					exit_client(source_p, source_p, source_p, squitreason);
+					exit_client(client_p, client_p, client_p, squitreason);
 					return;
 				}
 
