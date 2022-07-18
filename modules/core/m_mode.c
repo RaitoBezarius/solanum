@@ -426,11 +426,7 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 			modecount++;
 		}
 
-	      nextban:
-		s = t;
-
-		if(s != NULL)
-			t = strtok(NULL, " ");
+		s = strtok(NULL, " ");
 	}
 
 	if(modecount)
