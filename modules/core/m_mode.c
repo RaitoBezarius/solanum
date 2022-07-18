@@ -266,6 +266,7 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 	static char modebuf[BUFSIZE];
 	static char parabuf[BUFSIZE];
 	static char degrade[BUFSIZE];
+	static char squitreason[120];
 	struct Channel *chptr;
 	struct Ban *banptr;
 	rb_dlink_list *banlist;
@@ -349,10 +350,15 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 
 	while(!EmptyString(s))
 	{
-		/* ban with a leading ':' -- this will break the protocol */
 		if(*s == ':')
-			// die here
-			goto nextban;
+		{
+			/* ban with a leading ':' -- this will break the protocol */
+			sendto_realops_snomask(SNO_GENERAL, L_NETWIDE,
+				"Link %s dropped, invalid BMASK mask (%s)", source_p->name, s);
+			snprintf(squitreason, sizeof squitreason, "Invalid BMASK mask (%s)", s);
+			exit_client(source_p, source_p, source_p, squitreason);
+			return;
+		}
 
 		tlen = strlen(s);
 
@@ -381,7 +387,12 @@ do_bmask(bool extended, struct MsgBuf *msgbuf_p, struct Client *client_p, struct
 
 				if (who == NULL)
 				{
-					// die here, not enough params
+					/* EBMASK params don't divide by 3, so we have an incomplete chunk */
+					sendto_realops_snomask(SNO_GENERAL, L_NETWIDE,
+						"Link %s dropped, invalid EBMASK chunk", source_p->name);
+					snprintf(squitreason, sizeof squitreason, "Invalid EBMASK chunk");
+					exit_client(source_p, source_p, source_p, squitreason);
+					return;
 				}
 
 				banptr->when = bants;
